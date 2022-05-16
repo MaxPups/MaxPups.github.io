@@ -6,13 +6,21 @@ $('#calendar-id').bitroidCalendarEv(
         format: "DD.MM.YYYY",
         showEventBlock: true,
         events : [
-                  {
+             {
                 day: "16",
                 month: "05",
                 year: "2022",
                 event_description: "Кино в усадьбе",
                 event_title: "1: Кино в усадьбе Долгорукова",
                 event_body: "Проводим показ картин с участием Сухорукова"
+            },
+            {
+                day: "20",
+                month: "05",
+                year: "2022",
+                event_description: "фастфуд",
+                event_title: "еда разных стран",
+                event_body: "проводим фестиваль еды в крестовском парке"  
             },
             {
                 day: "16",
