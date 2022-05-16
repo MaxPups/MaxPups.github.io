@@ -8,41 +8,41 @@
 //
 // =====================================================================================================================
 
-(function( $ ) {
+(function ($) {
 
-	try {
+    try {
         var timeNow = moment();
-    } catch(e){
+    } catch (e) {
         alert("Can't find Moment.js, please read the ion.calendar description.");
         throw new Error("Can't find Moment.js library");
     }
 
     var methods = {
-        init: function(options){
+        init: function (options) {
             var settings = $.extend({
-                    lang: "en",
-                    mondayFirst: true,
-                    years: "10",
-                    format: "",
-                    startDate: "",
-                    hideArrows: false,
-                    onClick: null,
-                    onReady: null,
-                    clickable: true,
-                    events : [],
-                    containers : {
-                        events : ".calendarev-events-container"
-                    },
-                    showEventBlock: false
-                }, options),
+                lang: "en",
+                mondayFirst: true,
+                years: "10",
+                format: "",
+                startDate: "",
+                hideArrows: false,
+                onClick: null,
+                onReady: null,
+                clickable: true,
+                events: [],
+                containers: {
+                    events: ".calendarev-events-container"
+                },
+                showEventBlock: false
+            }, options),
                 html, i;
 
 
-            return this.each(function(){
+            return this.each(function () {
                 var $calendar = $(this);
 
                 //prevent overwrite
-                if($calendar.data("isActive")) {
+                if ($calendar.data("isActive")) {
                     return;
                 }
                 $calendar.data("isActive", true);
@@ -70,7 +70,7 @@
 
 
                 // public methods
-                this.updateData = function(options){
+                this.updateData = function (options) {
                     settings = $.extend(settings, options);
                     removeHTML();
                 };
@@ -78,7 +78,7 @@
 
 
                 // private methods
-                var removeHTML = function(){
+                var removeHTML = function () {
                     $prev.off();
                     $next.off();
                     $month.off();
@@ -89,10 +89,10 @@
                     prepareCalendar();
                 };
 
-                var prepareData = function(){
+                var prepareData = function () {
                     // start date
-                    if(settings.startDate) {
-                        if(settings.format.indexOf("L") >= 0) {
+                    if (settings.startDate) {
+                        if (settings.format.indexOf("L") >= 0) {
                             timeSelected = moment(settings.startDate, "YYYY.MM.DD").locale(settings.lang);
                         } else {
                             timeSelected = moment(settings.startDate, settings.format).locale(settings.lang);
@@ -103,41 +103,41 @@
                     // years diapason
                     settings.years = settings.years.toString();
                     tempYears = settings.years.split("-");
-                    if(tempYears.length === 1) {
+                    if (tempYears.length === 1) {
                         fromYear = moment().subtract(tempYears[0], "years").format("YYYY");
                         toYear = moment().format("YYYY");
-                    } else if(tempYears.length === 2){
+                    } else if (tempYears.length === 2) {
                         fromYear = tempYears[0];
                         toYear = tempYears[1];
                     }
                     fromYear = parseInt(fromYear);
                     toYear = parseInt(toYear);
 
-                    if(toYear < timeNowLocal.format("YYYY")) {
+                    if (toYear < timeNowLocal.format("YYYY")) {
                         timeNowLocal.year(toYear).month(11);
                     }
-                    if(fromYear > timeNowLocal.format("YYYY")) {
+                    if (fromYear > timeNowLocal.format("YYYY")) {
                         timeNowLocal.year(fromYear).month(0);
                     }
                 };
 
-                var prepareCalendar = function(){
+                var prepareCalendar = function () {
                     timeForWork = moment(timeNowLocal);
 
                     weekFirstDay = parseInt(timeForWork.startOf("month").format("d"));
                     weekLastDay = parseInt(timeForWork.endOf("month").format("d"));
                     monthLastDay = parseInt(timeForWork.endOf("month").format("D"));
 
-                    html  = '<div class="calendarev-container-calendar">';
+                    html = '<div class="calendarev-container-calendar rounded mt-5 mx-auto w-75 px-2">'; 
                     html += '<div class="calendarev-calendar-head">';
-                    html += '<span class="prev">&#8592;</span>';
-                    html += '<span class="next">&#8594;</span>';
-                    html += '<div class="calendarev-selects">';
+                    html += '<span class="prev btn btn-success text-light">&#8678;</span>';
+                    html += '<span class="next btn btn-success text-light">&#8680;</span>';
+                    html += '<div class="calendarev-selects w-50 mx-auto d-flex justify-content-around">';
 
                     // head month
-                    html += '<select class="calendarev-month">';
-                    for(i = 0; i < 12; i++){
-                        if(i === parseInt(timeNowLocal.format("M")) - 1){
+                    html += '<select class="calendarev-month form-control">';
+                    for (i = 0; i < 12; i++) {
+                        if (i === parseInt(timeNowLocal.format("M")) - 1) {
                             html += '<option value="' + i + '" selected="selected">' + timeForWork.month(i).format("MMMM") + '</option>';
                         } else {
                             html += '<option value="' + i + '">' + timeForWork.month(i).format("MMMM") + '</option>';
@@ -146,9 +146,9 @@
                     html += '</select>';
 
                     // head year
-                    html += '<select class="calendarev-years">';
-                    for(i = fromYear; i <= toYear; i++){
-                        if(i === parseInt(timeNowLocal.format("YYYY"))){
+                    html += '<select class="calendarev-years form-control">';
+                    for (i = fromYear; i <= toYear; i++) {
+                        if (i === parseInt(timeNowLocal.format("YYYY"))) {
                             html += '<option value="' + i + '" selected="selected">' + i + '</option>';
                         } else {
                             html += '<option value="' + i + '">' + i + '</option>';
@@ -158,11 +158,11 @@
 
                     html += '</div>';
 
-                    if(settings.sundayFirst) {
+                    if (settings.sundayFirst) {
 
                         // week
                         html += '<table class="calendarev-calendar-body"><tr>';
-                        for(i = 0; i < 7; i++) {
+                        for (i = 0; i < 7; i++) {
                             html += '<th>' + timeForWork.day(i).format("dd") + '</th>';
                         }
                         html += '</tr>';
@@ -170,69 +170,69 @@
                         // month
                         html += '<tr>';
                         // empty days
-                        for(i = 0; i < weekFirstDay; i++) {
+                        for (i = 0; i < weekFirstDay; i++) {
                             html += '<td class="calendarev-day-empty">&nbsp;</td>';
                         }
                         // days
-                        for(i = 1; i <= monthLastDay; i++) {
+                        for (i = 1; i <= monthLastDay; i++) {
 
-                        	var classevent = "";
-                        	var eventhtml = "";
-                        	var	dataevent = new Array();
-                        	if (settings.events != null && settings.showEventBlock) {
-                        		var day_event = moment(timeNow.locale(settings.lang));
-                        		$(settings.events).each(function(index, key){
-                        			day_event = parseInt(key.day) + "." + parseInt(key.month) + "." + parseInt(key.year);
-                        			if (day_event == moment(timeNowLocal).date(i).format("D.M.YYYY")) {
-                        				classevent = "calendarev-day-event";
-                        				eventhtml += key.event_description + "<br>";
-                        				dataevent.push(index);
-                        			}
-                        		})
-                        	}
+                            var classevent = "";
+                            var eventhtml = "";
+                            var dataevent = new Array();
+                            if (settings.events != null && settings.showEventBlock) {
+                                var day_event = moment(timeNow.locale(settings.lang));
+                                $(settings.events).each(function (index, key) {
+                                    day_event = parseInt(key.day) + "." + parseInt(key.month) + "." + parseInt(key.year);
+                                    if (day_event == moment(timeNowLocal).date(i).format("D.M.YYYY")) {
+                                        classevent = "calendarev-day-event";
+                                        eventhtml += key.event_description + "<br>";
+                                        dataevent.push(index);
+                                    }
+                                })
+                            }
 
                             // current day
-                            if(moment(timeNowLocal).date(i).format("D.M.YYYY") === timeNow.format("D.M.YYYY")) {
-                            	if (eventhtml != "") {
-                                	html += '<td class="calendarev-day calendarev-day-current '+classevent+'" data-event="'+dataevent+'">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
-                                }	else {
-                                	html += '<td class="calendarev-day calendarev-day-current '+classevent+'">' + i + '</td>';
-                            	}
-                            } else if(timeSelected && moment(timeNowLocal).date(i).format("D.M.YYYY") === timeSelected.format("D.M.YYYY")) {
-                            	if (eventhtml != "") {
-                            		html += '<td class="calendarev-day calendarev-day-selected '+classevent+'" data-event="'+dataevent+'">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
-                            	}	else {
-	                                html += '<td class="calendarev-day calendarev-day-selected '+classevent+'">' + i + '</td>';
-	                            }
+                            if (moment(timeNowLocal).date(i).format("D.M.YYYY") === timeNow.format("D.M.YYYY")) {
+                                if (eventhtml != "") {
+                                    html += '<td class="calendarev-day calendarev-day-current ' + classevent + '" data-event="' + dataevent + '">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
+                                } else {
+                                    html += '<td class="calendarev-day calendarev-day-current ' + classevent + '">' + i + '</td>';
+                                }
+                            } else if (timeSelected && moment(timeNowLocal).date(i).format("D.M.YYYY") === timeSelected.format("D.M.YYYY")) {
+                                if (eventhtml != "") {
+                                    html += '<td class="calendarev-day calendarev-day-selected ' + classevent + '" data-event="' + dataevent + '">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
+                                } else {
+                                    html += '<td class="calendarev-day calendarev-day-selected ' + classevent + '">' + i + '</td>';
+                                }
                             } else {
-                            	if (eventhtml != "") {
-                            		html += '<td class="calendarev-day '+classevent+'" data-event="'+dataevent+'">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
-                            	}	else {
-                                	html += '<td class="calendarev-day '+classevent+'">' + i + '</td>';
+                                if (eventhtml != "") {
+                                    html += '<td class="calendarev-day ' + classevent + '" data-event="' + dataevent + '">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
+                                } else {
+                                    html += '<td class="calendarev-day ' + classevent + '">' + i + '</td>';
                                 }
                             }
 
                             // new week - new line
-                            if((weekFirstDay + i) / 7 === Math.floor((weekFirstDay + i) / 7)) {
+                            if ((weekFirstDay + i) / 7 === Math.floor((weekFirstDay + i) / 7)) {
                                 html += '</tr><tr>';
                             }
                         }
                         // empty days
-                        for(i = weekLastDay; i < 6; i++) {
+                        for (i = weekLastDay; i < 6; i++) {
                             html += '<td class="calendarev-day-empty">&nbsp;</td>';
                         }
                         html += '</tr></table>';
 
                         if (settings.showEventBlock) {
-                        	html += '<div class="calendarev-events-container"></div>';
+                            html += '<div class="calendarev-events-container"></div>';
                         }
 
                     } else {
 
                         // week
                         html += '<table class="calendarev-calendar-body"><tr>';
-                        for(i = 1; i < 8; i++) {
-                            if(i < 7) {
+                        for (i = 1; i < 8; i++) {
+                            if (i < 7) {
                                 html += '<th>' + timeForWork.day(i).format("dd") + '</th>';
                             } else {
                                 html += '<th>' + timeForWork.day(0).format("dd") + '</th>';
@@ -244,70 +244,70 @@
                         html += '<tr>';
 
                         // empty days
-                        if(weekFirstDay > 0) {
+                        if (weekFirstDay > 0) {
                             weekFirstDay = weekFirstDay - 1;
                         } else {
                             weekFirstDay = 6;
                         }
-                        for(i = 0; i < weekFirstDay; i++) {
+                        for (i = 0; i < weekFirstDay; i++) {
                             html += '<td class="calendarev-day-empty">&nbsp;</td>';
                         }
 
 
-                        for(i = 1; i <= monthLastDay; i++) {
+                        for (i = 1; i <= monthLastDay; i++) {
 
-                        	var classevent = "";
-                        	var eventhtml = "";
-                        	var	dataevent = new Array();
-                        	if (settings.events != null) {
-                        		var day_event = moment(timeNow.locale(settings.lang));
-                        		$(settings.events).each(function(index, key){
-                        			day_event = parseInt(key.day) + "." + parseInt(key.month) + "." + parseInt(key.year);
-                        			if (day_event == moment(timeNowLocal).date(i).format("D.M.YYYY")) {
-                        				classevent = "calendarev-day-event";
-                        				eventhtml += key.event_description + "<br>";
-                        				dataevent.push(index);
-                        			}
-                        		})
-                        	}
+                            var classevent = "";
+                            var eventhtml = "";
+                            var dataevent = new Array();
+                            if (settings.events != null) {
+                                var day_event = moment(timeNow.locale(settings.lang));
+                                $(settings.events).each(function (index, key) {
+                                    day_event = parseInt(key.day) + "." + parseInt(key.month) + "." + parseInt(key.year);
+                                    if (day_event == moment(timeNowLocal).date(i).format("D.M.YYYY")) {
+                                        classevent = "calendarev-day-event";
+                                        eventhtml += key.event_description + "<br>";
+                                        dataevent.push(index);
+                                    }
+                                })
+                            }
 
                             // current day
-                            if(moment(timeNowLocal).date(i).format("D.M.YYYY") === timeNow.format("D.M.YYYY")) {
+                            if (moment(timeNowLocal).date(i).format("D.M.YYYY") === timeNow.format("D.M.YYYY")) {
                                 if (eventhtml != "") {
-                                	html += '<td class="calendarev-day calendarev-day-current '+classevent+'" data-event="'+dataevent+'">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
-                                }	else {
-                                	html += '<td class="calendarev-day calendarev-day-current '+classevent+'">' + i + '</td>';
+                                    html += '<td class="calendarev-day calendarev-day-current ' + classevent + '" data-event="' + dataevent + '">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
+                                } else {
+                                    html += '<td class="calendarev-day calendarev-day-current ' + classevent + '">' + i + '</td>';
                                 }
-                            } else if(timeSelected && moment(timeNowLocal).date(i).format("D.M.YYYY") === timeSelected.format("D.M.YYYY")) {
-                            	if (eventhtml != "") {
-                            		html += '<td class="calendarev-day calendarev-day-selected '+classevent+'" data-event="'+dataevent+'">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
-                            	}	else {
-                                	html += '<td class="calendarev-day calendarev-day-selected '+classevent+'">' + i + '</td>';
-                            	}
+                            } else if (timeSelected && moment(timeNowLocal).date(i).format("D.M.YYYY") === timeSelected.format("D.M.YYYY")) {
+                                if (eventhtml != "") {
+                                    html += '<td class="calendarev-day calendarev-day-selected ' + classevent + '" data-event="' + dataevent + '">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
+                                } else {
+                                    html += '<td class="calendarev-day calendarev-day-selected ' + classevent + '">' + i + '</td>';
+                                }
                             } else {
-                            	if (eventhtml != "") {
-                            		html += '<td class="calendarev-day '+classevent+'" data-event="'+dataevent+'">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
-                            	}	else {
-                                	html += '<td class="calendarev-day '+classevent+'">' + i + '</td>';
-                            	}
+                                if (eventhtml != "") {
+                                    html += '<td class="calendarev-day ' + classevent + '" data-event="' + dataevent + '">' + i + '<span class="event-popup">' + eventhtml + '</span></td>';
+                                } else {
+                                    html += '<td class="calendarev-day ' + classevent + '">' + i + '</td>';
+                                }
                             }
 
                             // new week - new line
-                            if((weekFirstDay + i) / 7 === Math.floor((weekFirstDay + i) / 7)) {
+                            if ((weekFirstDay + i) / 7 === Math.floor((weekFirstDay + i) / 7)) {
                                 html += '</tr><tr>';
                             }
                         }
                         // empty days
-                        if(weekLastDay < 1) {
+                        if (weekLastDay < 1) {
                             weekLastDay = 7;
                         }
-                        for(i = weekLastDay - 1; i < 6; i++) {
+                        for (i = weekLastDay - 1; i < 6; i++) {
                             html += '<td class="calendarev-day-empty">&nbsp;</td>';
                         }
                         html += '</tr></table>';
 
                         if (settings.showEventBlock) {
-                        	html += '<div class="calendarev-events-container"></div>';
+                            html += '<div class="calendarev-events-container"></div>';
                         }
                     }
 
@@ -317,7 +317,7 @@
                     placeCalendar();
                 };
 
-                var placeCalendar = function(){
+                var placeCalendar = function () {
                     $calendar.html(html);
 
                     $prev = $calendar.find(".calendarev-calendar-head .prev");
@@ -328,48 +328,48 @@
                     $events = $calendar.find(".calendarev-day-event");
                     $events_container = $(document).find(settings.containers.events);
 
-                    if(settings.hideArrows) {
+                    if (settings.hideArrows) {
                         $prev[0].style.display = "none";
                         $next[0].style.display = "none";
                     } else {
-                        $prev.on("click", function(e){
+                        $prev.on("click", function (e) {
                             e.preventDefault();
                             timeNowLocal.subtract(1, "months");
-                            if(parseInt(timeNowLocal.format("YYYY")) < fromYear) {
+                            if (parseInt(timeNowLocal.format("YYYY")) < fromYear) {
                                 timeNowLocal.add(1, "months");
                             }
                             removeHTML();
                         });
-                        $next.on("click", function(e){
+                        $next.on("click", function (e) {
                             e.preventDefault();
                             timeNowLocal.add(1, "months");
-                            if(parseInt(timeNowLocal.format("YYYY")) > toYear) {
-                                timeNowLocal.subtract(1,"months");
+                            if (parseInt(timeNowLocal.format("YYYY")) > toYear) {
+                                timeNowLocal.subtract(1, "months");
                             }
                             removeHTML();
                         });
                     }
 
-                    $month.on("change", function(e){
+                    $month.on("change", function (e) {
                         e.preventDefault();
                         var toMonth = $(this).prop("value");
                         timeNowLocal.month(parseInt(toMonth));
                         removeHTML();
                     });
-                    $year.on("change", function(e){
+                    $year.on("change", function (e) {
                         e.preventDefault();
                         var toYear = $(this).prop("value");
                         timeNowLocal.year(parseInt(toYear));
                         removeHTML();
                     });
 
-                    if(settings.clickable) {
-                        $day.on("click", function(e){
+                    if (settings.clickable) {
+                        $day.on("click", function (e) {
                             e.preventDefault();
                             var toDay = $(this).text();
                             timeNowLocal.date(parseInt(toDay));
                             timeSelected = moment(timeNowLocal);
-                            if(settings.format.indexOf("L") >= 0) {
+                            if (settings.format.indexOf("L") >= 0) {
                                 settings.startDate = timeSelected.format("YYYY-MM-DD");
                             } else {
                                 settings.startDate = timeSelected.format(settings.format);
@@ -379,10 +379,10 @@
                                 $(this).addClass('calendarev-day-selected');
                                 $events_container.html('');
                             }
-                             // trigger callback function
-                            if(typeof settings.onClick === "function") {
-                                if(settings.format) {
-                                    if(settings.format === "moment") {
+                            // trigger callback function
+                            if (typeof settings.onClick === "function") {
+                                if (settings.format) {
+                                    if (settings.format === "moment") {
                                         settings.onClick.call(this, timeSelected);
                                     } else {
                                         settings.onClick.call(this, timeSelected.format(settings.format));
@@ -395,19 +395,19 @@
                     }
 
                     if (settings.showEventBlock) {
-                        $events.on("click", function(e){
+                        $events.on("click", function (e) {
                             e.preventDefault();
                             var dataevent = $(this).attr('data-event').split(',');
                             htmltext = "";
                             for (var i = 0; i <= dataevent.length - 1; i++) {
                                 var eventblock = settings.events[dataevent[i]];
-                                if (i != 0)  htmltext += '</div>';
+                                if (i != 0) htmltext += '</div>';
                                 htmltext += '<div class="event-block">';
                                 if (eventblock.event_title != undefined && eventblock.event_title != "") {
-                                    htmltext += "<h3>"+eventblock.event_title+"</h3>";
+                                    htmltext += "<h3>" + eventblock.event_title + "</h3>";
                                 }
                                 if (eventblock.event_body != undefined && eventblock.event_body != "") {
-                                    htmltext += "<article>"+eventblock.event_body+"</article>";
+                                    htmltext += "<article>" + eventblock.event_body + "</article>";
                                 }
                             }
                             $events_container.html(htmltext);
@@ -415,9 +415,9 @@
                     }
 
                     // trigger onReady function
-                    if(typeof settings.onReady === "function") {
-                        if(settings.format) {
-                            if(settings.format === "moment") {
+                    if (typeof settings.onReady === "function") {
+                        if (settings.format) {
+                            if (settings.format === "moment") {
                                 settings.onReady.call(this, timeNowLocal);
                             } else {
                                 settings.onReady.call(this, timeNowLocal.format(settings.format));
@@ -428,7 +428,7 @@
                     }
 
                     // go to startDate
-                    if(settings.startDate && firstStart) {
+                    if (settings.startDate && firstStart) {
                         firstStart = false;
                         timeNowLocal.year(parseInt(timeSelected.format("YYYY")));
                         timeNowLocal.month(parseInt(timeSelected.format("M") - 1));
@@ -443,14 +443,14 @@
                 prepareCalendar();
             });
         },
-        update: function(options){
-            return this.each(function(){
+        update: function (options) {
+            return this.each(function () {
                 this.updateData(options);
             });
         }
     };
-     
-    $.fn.bitroidCalendarEv = function(method){
+
+    $.fn.bitroidCalendarEv = function (method) {
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof method === 'object' || !method) {
