@@ -99,8 +99,9 @@
 	text-align: center;
 	/* background: #ECECEC; */
 	background-color: #19A2B8;
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
+	border: 1px solid #ccc;
+	/* border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc; */
 	width: 42px;
 }
 
@@ -113,8 +114,11 @@
 	position: relative;
 	width: 42px;
 	height: 42px;
+	border: 1px solid #ccc;
 }
-
+.calendarev-day-empty{
+	border: 1px solid #ccc;
+}
 .calendarev-calendar-body .calendarev-day:hover {
 	cursor: pointer;
 	font-size: 16px;
@@ -122,7 +126,7 @@
 
 .calendarev-calendar-body .calendarev-day-current,
 .calendarev-calendar-body .calendarev-day-current:hover {
-	background-color: #ECECEC;
+	background-color: #DFA800;
 }
 
 .calendarev-calendar-body .calendarev-day-event,

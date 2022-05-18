@@ -128,7 +128,7 @@
                     weekLastDay = parseInt(timeForWork.endOf("month").format("d"));
                     monthLastDay = parseInt(timeForWork.endOf("month").format("D"));
 
-                    html = '<div class="calendarev-container-calendar rounded mt-5 mx-auto w-75">';cd  
+                    html = '<div class="calendarev-container-calendar rounded mt-5 mx-auto w-75">';
                     html += '<div class="calendarev-calendar-head">';
                     html += '<span class="prev btn btn-success text-light">&#8678;</span>';
                     html += '<span class="next btn btn-success text-light">&#8680;</span>';
